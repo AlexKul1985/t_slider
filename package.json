@@ -1,0 +1,9 @@
+{
+	"name":"test-slider-longly-text",
+	"version":"1.0.0",
+	"description": "Test",
+  	"author": "Alex-Kulikov <AlexKul1985sanshoy@mail.ru>",
+	"scripts":{
+		"start":"browser-sync start --server --files"
+	}
+}
