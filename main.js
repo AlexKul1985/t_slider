@@ -5,6 +5,9 @@ $(function(){
 	//console.log(diffResultHeight('.content'));
 	//console.log(getMainElement('.content').get(0).tagName == 'DIV');
 	handlerDataAboutHeight('.content');
+	$(window).resize(function(){
+		handlerDataAboutHeight('.content');
+	});
 });
 
 //////////////Получить родительский элемент////////////////////////////
@@ -60,7 +63,7 @@ return false;
 
 }
 
-////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////
 
 function handlerDataAboutHeight(main_selector){
 	var main_elem = getMainElement(main_selector); 
@@ -85,7 +88,7 @@ function handlerDataAboutHeight(main_selector){
 		}
 	}
 
-	///////////////////////////////// Object ////////////////////////////////////////////
+	//////////////////// Object ////////////////////////////////////////////
 
 	else {
 		if( (data.lenLI - 1) - data.index2 > 0 ){
@@ -113,31 +116,51 @@ function handlerDataAboutHeight(main_selector){
 }
 
 
-function getElementOfContent( data,main_elem ){
+function getElementOfContent( data, main_elem ){
 	if( $.type(data) === 'boolean' ) return; 
 	var result_str = '';
 	var len = main_elem.children().length;
 	if( $.type(data) === 'number' ){
 		if( len - 1 > data ){
 			for( var i = data; i < len; i++ ) {
-				result_str += main_elem.children().eq(i).html();
+				if(main_elem.children().eq(i).get(0).tagName === 'UL'){
+
+					result_str += '<ul>'+main_elem.children().eq(i).html()+'</ul>';
+				}
+				else {
+					result_str +='<p>'+ main_elem.children().eq(i).html()+'</p>';
+				}
 			}
 
 		}
 		else {
-			result_str += main_elem.children().eq(data).html();
+			if(main_elem.children().eq(data).get(0).tagName === 'UL'){
+				result_str += '<ul>'+main_elem.children().eq(data).html()+'</ul>';
+				}
+			else {
+				result_str += '<p>'+main_elem.children().eq(data).html()+'</p>';
+			}	
+		}	
 
-		}
 	}
 	else{
-		var len_child = main_elem.children().eq(data.index1).length;
+		var len_child = main_elem.children().eq(data.index1).children().length;
 		for( var j = data.index2; j < len_child ; j++ ){
-
-			result_str += main_elem.children().eq(data.index1).eq(j);
+			if( j == data.index2 ) result_str +='<ul>';
+			result_str += '<li>'+main_elem.children().eq(data.index1).children().eq(j).html()+'</li>';
+			if( j == len_child - 1 ) {
+				result_str +='</ul>';
+			}
 		}
-		if( data.index1 !==  len - 1 ){
+		if( data.index1 <  len - 1 ){
 			for( var k = data.index1 + 1; k < len; k++ ) {
-				result_str += main_elem.children().eq(k).html();
+				if(main_elem.children().eq(k).get(0).tagName === 'P'){
+					result_str += '<p>'+main_elem.children().eq(k).html()+'</p>';
+					
+				}
+				else{
+					result_str += '<ul>'+main_elem.children().eq(k).html()+'</ul>';
+				}
 			}
 		}
 
